@@ -17,6 +17,15 @@ public class Student {
         return id;
     }
 
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                '}';
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
