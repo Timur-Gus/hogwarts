@@ -1,5 +1,6 @@
 package ru.hogwarts.school.service;
 
+import ch.qos.logback.core.filter.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
@@ -39,9 +40,7 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     public List<Faculty> filterByColor(String color) {
-        return facultyRepository.findAll().stream()
-                .filter(s -> s.getColor().equals(color))
-                .collect(Collectors.toList());
+        return facultyRepository.findByColor(color);
     }
 
 }
