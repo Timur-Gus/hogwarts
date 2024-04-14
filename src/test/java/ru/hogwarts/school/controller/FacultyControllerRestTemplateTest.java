@@ -103,6 +103,17 @@ public class FacultyControllerRestTemplateTest {
         });
         assertThat(faculties.size()).isEqualTo(2);
 
+        //studentsByFaculty
+        jsonResponse = restTemplate.getForEntity(
+                PATH_FACULTY + "/" + faculty1.getId() + "/studentsByFaculty",
+                String.class);
+        assertThat(jsonResponse.getStatusCode().is2xxSuccessful()).isTrue();
+        assertThat(jsonResponse.getBody()).isNotNull();
+        json = jsonResponse.getBody();
+        ArrayList<Student> studentsByFaculty = objectMapper.readValue(json, new TypeReference<>() {
+        });
+        assertThat(studentsByFaculty.size()).isEqualTo(2);
+
     }
 
     private Faculty createFaculty(Faculty faculty) {
