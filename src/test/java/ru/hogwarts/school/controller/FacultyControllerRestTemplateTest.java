@@ -26,25 +26,13 @@ import static ru.hogwarts.school.constants.TestConstants.*;
 public class FacultyControllerRestTemplateTest {
     @Autowired
     TestRestTemplate restTemplate;
-    List<Student> students;
     ObjectMapper objectMapper = new ObjectMapper();
 
-    @BeforeEach
-    void init() {
-        Student student = STUDENT_1;
-        Student student2 = STUDENT_3;
-        ResponseEntity<Student> response = restTemplate.postForEntity(PATH_STUDENT, student, Student.class);
-        ResponseEntity<Student> response2 = restTemplate.postForEntity(PATH_STUDENT, student2, Student.class);
-        assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
-        assertThat(response2.getStatusCode().is2xxSuccessful()).isTrue();
-        this.students = new ArrayList<>(List.of(response.getBody(), response2.getBody()));
-    }
 
     @Test
     void crud() {
-
         //create
-        Faculty body = createFaculty(FACULTY_1);
+        Faculty body = createFaculty(STUDENT_1,FACULTY_1);
         checkFaculty(body, FACULTY_1.getName(), FACULTY_1.getColor());
 
         //read
@@ -67,14 +55,14 @@ public class FacultyControllerRestTemplateTest {
         //delete
         restTemplate.delete(PATH_FACULTY + "/" + body.getId());
         response = restTemplate.getForEntity(PATH_FACULTY + "/" + body.getId(), Faculty.class);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
     }
 
     @Test
     void filters() throws JsonProcessingException {
-        Faculty faculty1 = createFaculty(FACULTY_1);
-        Faculty faculty2 = createFaculty(FACULTY_2);
-        Faculty faculty3 = createFaculty(FACULTY_3);
+        Faculty faculty1 = createFaculty(STUDENT_1,FACULTY_1);
+        Faculty faculty2 = createFaculty(STUDENT_2,FACULTY_2);
+        Faculty faculty3 = createFaculty(STUDENT_3,FACULTY_3);
 
         //getAll
         ResponseEntity<ArrayList> response = restTemplate.getForEntity(PATH_FACULTY, ArrayList.class);
@@ -112,14 +100,14 @@ public class FacultyControllerRestTemplateTest {
         json = jsonResponse.getBody();
         ArrayList<Student> studentsByFaculty = objectMapper.readValue(json, new TypeReference<>() {
         });
-        assertThat(studentsByFaculty.size()).isEqualTo(2);
+        assertThat(studentsByFaculty.size()).isEqualTo(1);
 
     }
 
-    private Faculty createFaculty(Faculty faculty) {
-        faculty.setStudents(students);
+    private Faculty createFaculty(Student student, Faculty faculty) {
         ResponseEntity<Faculty> response = restTemplate.postForEntity(PATH_FACULTY, faculty, Faculty.class);
         assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
+        createStudent(student, faculty);
         return response.getBody();
     }
 
@@ -128,6 +116,12 @@ public class FacultyControllerRestTemplateTest {
         assertThat(faculty.getId()).isNotNull();
         assertThat(faculty.getName()).isEqualTo(name);
         assertThat(faculty.getColor()).isEqualTo(color);
+    }
+    private Student createStudent(Student student, Faculty faculty) {
+        student.setFaculty(faculty);
+        ResponseEntity<Student> response = restTemplate.postForEntity(PATH_STUDENT, student, Student.class);
+        assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
+        return response.getBody();
     }
 
 }

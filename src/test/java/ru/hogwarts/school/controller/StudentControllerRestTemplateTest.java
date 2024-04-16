@@ -98,7 +98,7 @@ public class StudentControllerRestTemplateTest {
 
         //facultyByStudent
         ResponseEntity<Faculty> responseFaculty = restTemplate.getForEntity(
-                PATH_STUDENT + student1.getId() + "/facultyByStudent",
+                PATH_STUDENT + "/" + student1.getId() + "/facultyByStudent",
                 Faculty.class);
         assertThat(responseFaculty.getStatusCode().is2xxSuccessful()).isTrue();
         assertThat(responseFaculty.getBody()).isNotNull();

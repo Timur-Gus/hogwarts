@@ -15,7 +15,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import ru.hogwarts.school.model.Faculty;
-import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.repository.StudentRepository;
 import ru.hogwarts.school.service.FacultyServiceImpl;
@@ -76,7 +75,7 @@ public class FacultyControllerWebMVCTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(mapper.writeValueAsString(faculty)))
                 .andExpect(MockMvcResultMatchers.status().isOk());
-        Mockito.verify(facultyRepository).delete(ArgumentMatchers.any(Faculty.class));
+        Mockito.verify(facultyRepository).deleteById(ArgumentMatchers.any(Long.class));
     }
     @Test
     void get() throws Exception {
@@ -99,5 +98,6 @@ public class FacultyControllerWebMVCTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Факультет 1"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].color").value("Красный"));
     }
+
 
 }

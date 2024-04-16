@@ -54,9 +54,6 @@ public class StudentController {
     @PutMapping("{id}")
     public ResponseEntity<Student> editStudent(@PathVariable Long id, @RequestBody Student student) {
         Student student1 = studentServiceImpl.editStudent(id,student);
-        if (student1 == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(student1);
     }
 

@@ -75,7 +75,7 @@ public class StudentControllerWebMVCTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(mapper.writeValueAsString(student)))
                 .andExpect(MockMvcResultMatchers.status().isOk());
-        Mockito.verify(studentRepository).delete(ArgumentMatchers.any(Student.class));
+        Mockito.verify(studentRepository).deleteById(ArgumentMatchers.any(Long.class));
     }
     @Test
     void get() throws Exception {
@@ -97,5 +97,7 @@ public class StudentControllerWebMVCTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Студент 1"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].age").value("17"));
     }
+
+
 
 }
