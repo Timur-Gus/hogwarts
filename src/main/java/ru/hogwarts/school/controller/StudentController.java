@@ -21,6 +21,22 @@ public class StudentController {
     public Collection<Student> getAllStudents() {
         return studentServiceImpl.getAll();
     }
+
+    @GetMapping("/count-students")
+    public Integer getCountStudents() {
+        return studentServiceImpl.getCountStudents();
+    }
+
+    @GetMapping("/average-age-students")
+    public Double getAverageAgeStudents() {
+        return studentServiceImpl.getAverageAgeStudents();
+    }
+
+    @GetMapping("/last-five-students")
+    public List<Student> getLastFiveStudents() {
+        return studentServiceImpl.getLastFiveStudents();
+    }
+
     @GetMapping("{id}")
     public ResponseEntity<Student> getStudent(@PathVariable Long id) {
         Student student = studentServiceImpl.findStudent(id);
