@@ -8,6 +8,7 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -74,6 +75,14 @@ public class FacultyServiceImpl implements FacultyService {
     public List<Faculty> getAll() {
         logger.info("Was invoked method for upload get all faculty");
         return facultyRepository.findAll();
+    }
+
+    @Override
+    public String getMostLongNameFaculty() {
+        return facultyRepository.findAll().stream()
+                .map(s ->s.getName())
+                .max(Comparator.comparingInt(String::length))
+                .get();
     }
 
 

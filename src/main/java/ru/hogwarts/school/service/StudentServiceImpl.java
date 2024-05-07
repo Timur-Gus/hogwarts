@@ -9,6 +9,7 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -29,8 +30,8 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student findStudent(Long id) {
         logger.info("Was invoked method for upload find student");
-        return studentRepository.findById(id).orElseThrow(() ->{
-                logger.error("Student not found");
+        return studentRepository.findById(id).orElseThrow(() -> {
+            logger.error("Student not found");
             return new NotFoundStudentException();
         });
     }
@@ -90,6 +91,23 @@ public class StudentServiceImpl implements StudentService {
     public List<Student> filterByAgeBetween(int min, int max) {
         logger.info("Was invoked method for upload filter by age between");
         return studentRepository.findByAgeBetween(min, max);
+    }
+
+    @Override
+    public List<String> filterByNameStartedLetterA() {
+        return studentRepository.findAll().stream()
+                .filter(s -> s.getName().charAt(0) == 'А')
+                .map(s -> s.getName().toUpperCase())
+                .sorted()
+                .toList();
+    }
+
+    @Override
+    public Double getAverageAgeStudentsStream() {
+        return studentRepository.findAll().stream()
+                .mapToInt(Student::getAge)
+                .average()
+                .getAsDouble();
     }
 
 }

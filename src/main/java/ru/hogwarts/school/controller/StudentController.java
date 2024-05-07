@@ -31,6 +31,10 @@ public class StudentController {
     public Double getAverageAgeStudents() {
         return studentServiceImpl.getAverageAgeStudents();
     }
+    @GetMapping("/average-age-students-stream")
+    public Double getAverageAgeStudentsStream() {
+        return studentServiceImpl.getAverageAgeStudentsStream();
+    }
 
     @GetMapping("/last-five-students")
     public List<Student> getLastFiveStudents() {
@@ -47,20 +51,25 @@ public class StudentController {
         return ResponseEntity.ok(student);
     }
 
-    @GetMapping("{id}/facultyByStudent")
+    @GetMapping("{id}/faculty-by-student")
     public Faculty getFacultyByStudent(@PathVariable Long id) {
         return studentServiceImpl.getFacultyByStudent(id);
     }
 
-    @GetMapping("/filteredByAge")
+    @GetMapping("/filtered-by-age")
     public List<Student> getStudentsByAge(@RequestParam int age) {
 
         return studentServiceImpl.filterByAge(age);
     }
-    @GetMapping("/filteredByAgeBetween")
+    @GetMapping("/filtered-by-age-between")
     public List<Student> getStudentsByAgeBetween(@RequestParam int min,
                                                  @RequestParam int max) {
         return studentServiceImpl.filterByAgeBetween(min, max);
+    }
+
+    @GetMapping("/filter-by-name-started-letter-A")
+    public List<String> filterByNameStartedLetterA() {
+        return studentServiceImpl.filterByNameStartedLetterA();
     }
     @PostMapping
     public Student createStudent(@RequestBody Student student) {
