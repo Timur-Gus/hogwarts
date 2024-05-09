@@ -9,13 +9,14 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 @Service
 public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
     private final Logger logger = LoggerFactory.getLogger(AvatarServiceImpl.class);
+
+    private Object flag = new Object();
 
     public StudentServiceImpl(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
@@ -108,6 +109,39 @@ public class StudentServiceImpl implements StudentService {
                 .mapToInt(Student::getAge)
                 .average()
                 .getAsDouble();
+    }
+
+    @Override
+    public void getNamesStudentsParallel() {
+        System.out.println(studentRepository.findById(1L).get().getName());
+        System.out.println(studentRepository.findById(2L).get().getName());
+        new Thread(() -> {
+            System.out.println(studentRepository.findById(3L).get().getName());
+            System.out.println(studentRepository.findById(4L).get().getName());
+        }).start();
+        new Thread(() -> {
+            System.out.println(studentRepository.findById(5L).get().getName());
+            System.out.println(studentRepository.findById(6L).get().getName());
+        }).start();
+    }
+
+    @Override
+    public void getNamesStudentSynchronized() {
+        System.out.println(studentRepository.findById(1L).get().getName());
+        System.out.println(studentRepository.findById(2L).get().getName());
+
+        new Thread(() -> {
+            synchronized (flag) {
+                System.out.println(studentRepository.findById(3L).get().getName());
+                System.out.println(studentRepository.findById(4L).get().getName());
+            }
+        }).start();
+        new Thread(() -> {
+            synchronized (flag) {
+                System.out.println(studentRepository.findById(5L).get().getName());
+                System.out.println(studentRepository.findById(6L).get().getName());
+            }
+        }).start();
     }
 
 }
