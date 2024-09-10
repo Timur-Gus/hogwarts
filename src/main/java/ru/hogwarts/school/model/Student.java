@@ -39,6 +39,14 @@ public class Student {
                 '}';
     }
 
+    public Avatar getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(Avatar avatar) {
+        this.avatar = avatar;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -66,6 +74,7 @@ public class Student {
     public void setFaculty(Faculty faculty) {
         this.faculty = faculty;
     }
+
 
     @Override
     public boolean equals(Object o) {
