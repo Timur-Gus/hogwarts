@@ -6,6 +6,7 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.FacultyServiceImpl;
 
+import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -17,6 +18,10 @@ public class FacultyController {
         this.facultyServiceImpl = facultyServiceImpl;
     }
 
+    @GetMapping
+    public Collection<Faculty> getAllFaculty() {
+        return facultyServiceImpl.getAll();
+    }
     @GetMapping("{id}")
     public ResponseEntity<Faculty> getFaculty(@PathVariable Long id) {
         Faculty faculty = facultyServiceImpl.findFaculty(id);
@@ -48,12 +53,9 @@ public class FacultyController {
         return facultyServiceImpl.addFaculty(faculty);
     }
 
-    @PutMapping
-    public ResponseEntity<Faculty> editFaculty(Long id, @RequestBody Faculty faculty) {
+    @PutMapping("{id}")
+    public ResponseEntity<Faculty> editFaculty(@PathVariable Long id, @RequestBody Faculty faculty) {
         Faculty faculty1 = facultyServiceImpl.editFaculty(id, faculty);
-        if (faculty1 == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(faculty1);
     }
 

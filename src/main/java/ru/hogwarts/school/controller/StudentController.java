@@ -6,6 +6,7 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentServiceImpl;
 
+import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -16,7 +17,10 @@ public class StudentController {
     public StudentController(StudentServiceImpl studentServiceImpl) {
         this.studentServiceImpl = studentServiceImpl;
     }
-
+    @GetMapping()
+    public Collection<Student> getAllStudents() {
+        return studentServiceImpl.getAll();
+    }
     @GetMapping("{id}")
     public ResponseEntity<Student> getStudent(@PathVariable Long id) {
         Student student = studentServiceImpl.findStudent(id);
@@ -37,24 +41,19 @@ public class StudentController {
 
         return studentServiceImpl.filterByAge(age);
     }
-
     @GetMapping("/filteredByAgeBetween")
     public List<Student> getStudentsByAgeBetween(@RequestParam int min,
                                                  @RequestParam int max) {
         return studentServiceImpl.filterByAgeBetween(min, max);
     }
     @PostMapping
-
     public Student createStudent(@RequestBody Student student) {
         return studentServiceImpl.addStudent(student);
     }
 
-    @PutMapping
-    public ResponseEntity<Student> editStudent(Long id, @RequestBody Student student) {
+    @PutMapping("{id}")
+    public ResponseEntity<Student> editStudent(@PathVariable Long id, @RequestBody Student student) {
         Student student1 = studentServiceImpl.editStudent(id,student);
-        if (student1 == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(student1);
     }
 
