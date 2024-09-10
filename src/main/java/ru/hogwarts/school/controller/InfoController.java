@@ -25,7 +25,7 @@ public class InfoController {
     @GetMapping("/sum")
     public Integer getSum() {
         Integer sum = IntStream
-                .iterate(1, a -> a < 1_000_000, a -> a + 1)
+                .range(1,1_000_000)
                 .parallel()
                 .sum();
         return sum;

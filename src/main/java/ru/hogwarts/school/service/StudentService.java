@@ -29,4 +29,7 @@ public interface StudentService {
     List<Student> getLastFiveStudents();
     List<String> filterByNameStartedLetterA();
     Double getAverageAgeStudentsStream();
+    void getNamesStudentsParallel();
+
+    void getNamesStudentSynchronized();
 }

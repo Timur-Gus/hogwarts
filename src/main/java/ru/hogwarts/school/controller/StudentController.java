@@ -17,6 +17,7 @@ public class StudentController {
     public StudentController(StudentServiceImpl studentServiceImpl) {
         this.studentServiceImpl = studentServiceImpl;
     }
+
     @GetMapping()
     public Collection<Student> getAllStudents() {
         return studentServiceImpl.getAll();
@@ -27,10 +28,20 @@ public class StudentController {
         return studentServiceImpl.getCountStudents();
     }
 
+    @GetMapping("/students/print-parallel")
+    public void getNamesStudentsParallel() {
+            studentServiceImpl.getNamesStudentsParallel();
+    }
+    @GetMapping("/students/print-synchronized")
+    public void getNamesStudentSynchronized() {
+            studentServiceImpl.getNamesStudentsParallel();
+    }
+
     @GetMapping("/average-age-students")
     public Double getAverageAgeStudents() {
         return studentServiceImpl.getAverageAgeStudents();
     }
+
     @GetMapping("/average-age-students-stream")
     public Double getAverageAgeStudentsStream() {
         return studentServiceImpl.getAverageAgeStudentsStream();
@@ -61,6 +72,7 @@ public class StudentController {
 
         return studentServiceImpl.filterByAge(age);
     }
+
     @GetMapping("/filtered-by-age-between")
     public List<Student> getStudentsByAgeBetween(@RequestParam int min,
                                                  @RequestParam int max) {
@@ -71,6 +83,7 @@ public class StudentController {
     public List<String> filterByNameStartedLetterA() {
         return studentServiceImpl.filterByNameStartedLetterA();
     }
+
     @PostMapping
     public Student createStudent(@RequestBody Student student) {
         return studentServiceImpl.addStudent(student);
@@ -78,7 +91,7 @@ public class StudentController {
 
     @PutMapping("{id}")
     public ResponseEntity<Student> editStudent(@PathVariable Long id, @RequestBody Student student) {
-        Student student1 = studentServiceImpl.editStudent(id,student);
+        Student student1 = studentServiceImpl.editStudent(id, student);
         return ResponseEntity.ok(student1);
     }
 
