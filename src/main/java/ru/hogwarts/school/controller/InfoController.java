@@ -10,7 +10,6 @@ import java.util.stream.Stream;
 @RestController
 public class InfoController {
 
-
     private final String serverPort;
 
     public InfoController(@Value("${server.port:blank-server-port}") String serverPort) {
